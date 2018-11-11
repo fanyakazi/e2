@@ -1,0 +1,31 @@
+<!DOCTYPE html><html>
+<head>
+ <meta charset=UTF-8>
+ <title>Preview</title>
+ <script src=https://unpkg.com/react@16/umd/react.production.min.js></script>
+ <script src=https://unpkg.com/react-dom@16/umd/react-dom.production.min.js></script>
+</head>
+<body>
+ <span id=root></span>
+ <script>
+  var done=6;
+  var node=[];
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange=function(){
+   if (this.readyState==4&&this.status==200) {lista = JSON.parse(xhttp.responseText);
+	for(i=0;i<=6;i++){
+	 node[i]=React.createElement('ul',{id:'ul'+lista[i].id},'Zadanie '+lista[i].id, React.createElement('li',null,lista[i].title),React.createElement('li',null,'Ukończone: ',React.createElement('input',{type:'checkbox',defaultChecked:lista[i].completed})),React.createElement('button',{onClick:usunR,value:lista[i].id},'usuń'));}
+	let ins = React.createElement('div',{id:'tasklist'},node[0],node[1],node[2],node[3],node[4],node[5],node[6]);
+	ReactDOM.render(ins,document.getElementById('root'));}};
+  xhttp.open("GET","https://jsonplaceholder.typicode.com/todos",true);
+  xhttp.send(); 
+  function usunR(event){let find=document.getElementById('ul'+event.currentTarget.value); if (find.getElementsByTagName('input')[0].checked) find.parentNode.removeChild(find);}
+  function usun(id){let find=document.getElementById('ul'+id); if (find.getElementsByTagName('input')[0].checked) find.parentNode.removeChild(find);}
+  function dodaj(){
+   let limit = tasklist.getElementsByTagName('ul').length; 
+   if(limit<10&&done<lista.length) {done++; let nowy = document.createElement('ul'); 
+    nowy.id='ul'+lista[done].id; let checked = lista[done].completed?'checked':'';
+    nowy.innerHTML="Zadanie "+lista[done].id+"<li>"+lista[done].title+"</li>"+"<li>Ukończone: <input type=checkbox "+checked+"></li><button onclick=usun("+lista[done].id+")>usuń</button>";
+    tasklist.appendChild(nowy);} else alert('Nie można pobrać więcej zadań');}
+ </script><button onclick=dodaj()>pobierz nowe zadanie</button>
+</body></html>
